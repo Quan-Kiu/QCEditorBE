@@ -55,14 +55,14 @@ io.on("connection", (socket) => {
     );
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnecting", () => {
     const rooms = socket?.rooms;
     if (rooms) {
+      users.delete(socket.id);
       rooms.forEach((roomId) => {
         socket.to(roomId).emit(SOCKET_ACTION.LEAVE, getUsers());
       });
     }
-    users.delete(socket.id);
   });
 });
 
